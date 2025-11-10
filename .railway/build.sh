@@ -1,32 +1,29 @@
 #!/bin/sh
+set -e # berhenti kalau ada error
 
-# --------------------------------------
-# Build script otomatis untuk Laravel + Tailwind + Vite
-# --------------------------------------
+echo "==> Install PHP dependencies"
+composer install --optimize-autoloader --no-dev
 
-echo "=== 1. Install Composer dependencies ==="
-composer install --no-dev --optimize-autoloader
-
-echo "=== 2. Install Node.js dependencies ==="
+echo "==> Install Node.js dependencies"
 npm install
 
-echo "=== 3. Build assets dengan Vite + Tailwind ==="
+echo "==> Build Tailwind + Vite"
 npm run build
 
-echo "=== 4. Clear dan cache konfigurasi Laravel ==="
+echo "==> Clear & cache Laravel configurations"
 php artisan config:clear
 php artisan cache:clear
-php artisan route:clear
 php artisan view:clear
+php artisan route:clear
+
 php artisan config:cache
 php artisan route:cache
 php artisan view:cache
 
-echo "=== 5. Jalankan migration jika ada ==="
+echo "==> Link storage folder"
+php artisan storage:link || echo "Storage link sudah ada, lanjut..."
+
+echo "==> Run migrations"
 php artisan migrate --force
 
-echo "=== 6. Buat symbolic link storage ==="
-php artisan storage:link || echo "Storage link sudah ada"
-
-echo "=== Build selesai! ==="
-
+echo "✅ Build selesai"
