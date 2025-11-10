@@ -5,10 +5,10 @@ echo "==> Install PHP dependencies"
 composer install --optimize-autoloader --no-dev
 
 echo "==> Install Node.js dependencies"
-npm install
+#npm install
 
 echo "==> Build Tailwind + Vite"
-npm run build
+#npm run build
 
 echo "==> Clear & cache Laravel configurations"
 php artisan config:clear
